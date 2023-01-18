@@ -1,11 +1,11 @@
 use wasm_bindgen::prelude::*;
 
-#[wasm_bindgen]
-pub fn add(a: i32, b: i32) -> i32 {
-    a + b
-}
-
-#[test]
-fn add_test() {
-    assert_eq!(1 + 1, add(1, 1));
-}
+pub fn addnote(mut notelist: Vec<String>,element: String){
+    notelist.push(element);
+    println!("{:?}",notelist);
+  }
+  fn main(){
+    let note_list = Vec::new();
+    let main = "he"; // this is an example ("he", will be whatever the user puts in as a note)
+    addnote(note_list,main.to_string());
+  }
