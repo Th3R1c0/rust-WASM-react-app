@@ -1,15 +1,17 @@
 use wasm_bindgen::prelude::*;
-#[wasm_bindgen]
 struct NoteApp;
 impl NoteApp{
+    #[wasm_bindgen]
     pub fn addnote(mut notelist: Vec<String>,element: String){
         notelist.push(element);
         println!("{:?}",notelist);
     }
+    #[wasm_bindgen]
     pub fn delnote(mut notelist: Vec<String>,element:String){
       let index = notelist.iter().position(element).unwrap();
       notelist.remove(index);
     }
+    #[wasm_bindgen]
     pub fn get_values(mut notelist: Vec<String>){
       return notelist;
     }
