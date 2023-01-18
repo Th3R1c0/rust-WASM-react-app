@@ -1,9 +1,19 @@
 use wasm_bindgen::prelude::*;
 #[wasm_bindgen]
-pub fn addnote(mut notelist: Vec<String>,element: String){
-    notelist.push(element);
-    println!("{:?}",notelist);
-  }
+struct NoteApp;
+impl NoteApp{
+    pub fn addnote(mut notelist: Vec<String>,element: String){
+        notelist.push(element);
+        println!("{:?}",notelist);
+    }
+    pub fn delnote(mut notelist: Vec<String>,element:String){
+      let index = notelist.iter().position(element).unwrap();
+      notelist.remove(index);
+    }
+    pub fn get_values(mut notelist: Vec<String>){
+      return notelist;
+    }
+}
 fn main(){
     let note_list = Vec::new();
     let main = "he"; // this is an example ("he", will be whatever the user puts in as a note)
