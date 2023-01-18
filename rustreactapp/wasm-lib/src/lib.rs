@@ -1,5 +1,5 @@
 use wasm_bindgen::prelude::*;
-
+#[wasm_bindgen]
 pub fn addnote(mut notelist: Vec<String>,element: String){
     notelist.push(element);
     println!("{:?}",notelist);
