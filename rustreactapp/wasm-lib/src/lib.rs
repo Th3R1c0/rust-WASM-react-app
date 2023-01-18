@@ -12,7 +12,7 @@ impl NoteApp{
       notelist.remove(index);
     }
     #[wasm_bindgen]
-    pub fn get_values(mut notelist: Vec<String>){
+    pub fn get_values(mut notelist: Vec<String>) -> String {
       return notelist;
     }
 }
