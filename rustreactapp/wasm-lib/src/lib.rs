@@ -20,5 +20,5 @@ fn main(){
     //so you will get the note feild and then pass in a value to this function
     //than you can do a for loop through "notelist"
     // accessing the values of "notelist" by the "get_values" function
-    addnote(note_list,main.to_string());
+        NoteApp::addnote(note_list,main.to_string());
   }
