@@ -17,7 +17,7 @@ pub fn delnote(mut notelist: Vec<String>,element:String){
 pub fn get_values(mut notelist: Vec<String>) -> Vec<String>{
     notelist
 }
-fn main(){
+#[wasm_bindgen]
+pub fn init(){ //Run this function at the start of the javascript program
     let note_list = Vec::<String>::new();
-    addnote(note_list,"je".to_string());
   }
