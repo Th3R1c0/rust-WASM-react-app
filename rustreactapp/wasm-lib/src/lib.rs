@@ -3,30 +3,27 @@ struct NoteAppRS{
     note_list_rs: Vec<String>,
 }
 impl NoteAppRS{
-    fn addnote(element: String){
+    fn addnote(&self,element: String){
         self.note_list_rs.push(element);
     }
-    fn delnote(element:String){
-        let index = note_list
+    fn delnote(&self,element:String){
+        let index = self.note_list_rs
         .iter()
         .position(|&r| r == element)
         .unwrap();
         self.note_list_rs.remove(index);
     }
-    fn get_values() -> Vec<String>{
+    fn get_values(&self) -> Vec<String>{
         self.note_list_rs
     }
 }
-fn main(){
-    let mut note_list = Vec::<String>::new();
-    NoteAppRS::addnote(note_list,main.to_string());
-}
+
 
 #[wasm_bindgen]
 pub fn addnote(element:String){
-    NoteAppRS::addnote(element);
+    NoteAppRS::addnote(/* &NoteAppRS */,element);
 }
 #[wasm_bindgen]
 pub fn delnote(element:String){
-    NoteAppRS::delnote(element)
+    NoteAppRS::delnote(/* &NoteAppRS */,element)
 }
