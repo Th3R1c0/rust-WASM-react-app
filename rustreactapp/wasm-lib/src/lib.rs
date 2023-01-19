@@ -1,4 +1,30 @@
 use wasm_bindgen::prelude::*;
+use sqlite::Error as sqErr;
+
+pub struct Note{
+    note:String,
+}
+
+#[derive(Debug)]
+pub enum NoteErr{
+    DbErr(sqErr),
+}
+
+impl From<sqlErr> for NoteErr{
+    fn from(s:sqErr)->Self{
+        NoteErr::DbErr(s);
+    }
+}
+
+impl Note{
+    pub fn add(&self,note:&str) -> Result<(),NoteErr>{
+        let connection = sqlite::open(&self.note)?;
+        let mut db = connection.
+    }
+}
+
+
+/*
 struct NoteAppRS{
     note_list_rs: Vec<String>,
 }
@@ -21,9 +47,10 @@ impl NoteAppRS{
 
 #[wasm_bindgen]
 pub fn addnote(element:String){
-    NoteAppRS::addnote(/* &NoteAppRS */,element);
+    NoteAppRS::addnote(element);
 }
 #[wasm_bindgen]
 pub fn delnote(element:String){
-    NoteAppRS::delnote(/* &NoteAppRS */,element)
+    NoteAppRS::delnote(element)
 }
+*/
