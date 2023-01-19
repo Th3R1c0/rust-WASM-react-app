@@ -1,36 +1,32 @@
 use wasm_bindgen::prelude::*;
-struct NoteAppRS;
+struct NoteAppRS{
+    note_list_rs: Vec<String>,
+}
 impl NoteAppRS{
-    fn addnote(mut notelist: Vec<String>,element: String){
-        notelist.push(element);
-        println!("{:?}",notelist);
+    fn addnote(element: String){
+        self.note_list_rs.push(element);
     }
-    fn delnote(mut notelist: Vec<String>,element:String){
+    fn delnote(element:String){
         let index = note_list
         .iter()
         .position(|&r| r == element)
         .unwrap();
-        notelist.remove(index);
+        self.note_list_rs.remove(index);
     }
-    fn get_values(notelist: Vec<String>) -> Vec<String>{
-      notelist
+    fn get_values() -> Vec<String>{
+        self.note_list_rs
     }
 }
 fn main(){
-    let note_list = Vec::new();
-    let main = "he"; // this is an example ("he", will be whatever the user puts in as a note)
+    let mut note_list = Vec::<String>::new();
     NoteAppRS::addnote(note_list,main.to_string());
 }
 
 #[wasm_bindgen]
 pub fn addnote(element:String){
-    NoteAppRS::addnote(note_list,element);
+    NoteAppRS::addnote(element);
 }
 #[wasm_bindgen]
 pub fn delnote(element:String){
-    NoteAppRs::delnote(note_list,element)
-}
-#[wasm_bindgen]
-pub fn get_values(){
-    get_values(note_list)
+    NoteAppRS::delnote(element)
 }
