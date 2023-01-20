@@ -1,42 +1,58 @@
-use wasm_bindgen::prelude::*;
-use sqlite::Error as sqErr;
+#![allow(unused)]
+use sqlx::postgres::{PgPoolOptions,PgRow};
+use sqlx::{FromRow,Row};
 
-pub struct Note{
-    note:String,
-}
-
-#[derive(Debug)]
-pub enum NoteErr{
-    DbErr(sqErr),
-}
-
-impl<SqlErr> From<sqErr> for NoteErr{
-    fn from(s:sqErr)->Self{
-        NoteErr::DbErr(s);
-    }
-}
-
-impl Note{
-    pub fn add(&self,note:&str) -> Result<(),NoteErr>{
-        let connection = sqlite::open(&self.note)?;
-        let mut db = connection.prepare("insert into notes (note) values (?);");
-        db.bind(1,note)?;
-        db?.next()?;
-        Ok(())
-    }
+#[derive(Debug,FromRow)]
+struct Note{
+    id: i64,
+    content: String,
 }
 
 
-fn main(){
-    let db = Note{
-        note: String::from("./data.db"),
-    };
-    match db.add("hello"){
-        Ok(_) => println!("sucess"),
-        Err(NoteErr::DbErr(ref err)) => println!("{:?}",err)
-    }
-}
+#[tokio::main]
+async fn main() -> Result<(), sqlx::Error>{
+    let pool = PgPoolOptions::new().max_connections(5)
+    .connect("postgres://postgres:welcom@localhost/postgres")
+    .await?;
+    sqlx::query(
+        r#"
+        CREATE TABLE IF NOT EXISTS notes(
+            id bigserial,
+            content text
+        );
+        "#,
+    ).execute(&pool)
+    .await?;
+ 
+    // inserting a new note
+    let row: (i64,) = sqlx::query_as("insert into notes (content) values ($1) returning id")
+    .bind("a new note")
+    .fetch_one(&pool)
+    .await?;
 
+    //selecting all the notes
+    let rows =sqlx::query("SELECT * FROM notes").fetch_all(&pool).await?;
+    
+    // making the result string to pass to JS
+    let str_result = rows
+    .iter()
+    .map(|r| format!("{} - {}",r.get::<i64,_>("id"),r.get::<String,_>("name"))
+    .collect::<Vec<String>>()
+    .join(", ");
+
+    let select_query = sqlx::query("SELECT id, content FROM notes");
+    let notes: Vec<Note> = select_query
+    .map(|row: PgRow| Note{
+        id: row.get("id"),
+        content: row.get("content"),
+    })
+    .fetch_all(&pool)
+    .await?;
+    
+
+
+    Ok(())
+}
 
 /*
 struct NoteAppRS{
