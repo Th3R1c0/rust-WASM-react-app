@@ -10,7 +10,7 @@ pub enum NoteErr{
     DbErr(sqErr),
 }
 
-impl From<sqlErr> for NoteErr{
+impl<SqlErr> From<sqErr> for NoteErr{
     fn from(s:sqErr)->Self{
         NoteErr::DbErr(s);
     }
@@ -19,7 +19,21 @@ impl From<sqlErr> for NoteErr{
 impl Note{
     pub fn add(&self,note:&str) -> Result<(),NoteErr>{
         let connection = sqlite::open(&self.note)?;
-        let mut db = connection.
+        let mut db = connection.prepare("insert into notes (note) values (?);");
+        db.bind(1,note)?;
+        db?.next()?;
+        Ok(())
+    }
+}
+
+
+fn main(){
+    let db = Note{
+        note: String::from("./data.db"),
+    };
+    match db.add("hello"){
+        Ok(_) => println!("sucess"),
+        Err(NoteErr::DbErr(ref err)) => println!("{:?}",err)
     }
 }
 
