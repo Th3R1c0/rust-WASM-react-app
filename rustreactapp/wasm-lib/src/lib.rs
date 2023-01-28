@@ -42,18 +42,16 @@ impl SqlStruct{
         .join(", ");
         str_result
     };
-
-    let select_query = sqlx::query("SELECT id, content FROM notes");
-    let notes: Vec<Note> = select_query
-    .map(|row: PgRow| Note{
-        id: row.get("id"),
-        content: row.get("content"),
-    })
-    .fetch_all(&pool)
-    .await?;
-
-
-
+    pub fn selection(){
+        let select_query = sqlx::query("SELECT id, content FROM notes");
+        let notes: Vec<Note> = select_query
+        .map(|row: PgRow| Note{
+            id: row.get("id"),
+            content: row.get("content"),
+        })
+        .fetch_all(&pool)
+        .await?;
+    };
     Ok(())
 }
 
