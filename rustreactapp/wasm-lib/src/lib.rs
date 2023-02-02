@@ -24,7 +24,7 @@ impl SqlStruct{
         ).execute(&pool)
         .await?;
         };
-    #[actix_web]
+    #[wasm_bindgen]
     pub fn inserting_note(){
         let row: (i64,) = sqlx::query_as("insert into notes (content) values ($1) returning id")
             .bind("a new note")
@@ -33,7 +33,7 @@ impl SqlStruct{
         };
 
     //selecting all the notes
-    #[actix_web]
+    #[wasm_bindgen]
     pub fn select_rows() -> str{
         let rows =sqlx::query("SELECT * FROM notes").fetch_all(&pool).await?;
         // making the result string to pass to JS
@@ -44,7 +44,7 @@ impl SqlStruct{
         .join(", ");
         str_result
     };
-    #[actix_web]
+    #[wasm_bindgen]
     pub fn selection(){
         let select_query = sqlx::query("SELECT id, content FROM notes");
         let notes: Vec<Note> = select_query
