@@ -1,7 +1,7 @@
 #![allow(unused)]
 use sqlx::postgres::{PgPoolOptions,PgRow};
 use sqlx::{FromRow,Row};
-
+use wasm_bindgen::prelude::*;
 #[derive(Debug,FromRow)]
 struct Note{
     id: i64,
